@@ -101,7 +101,7 @@ def travel_api():
 
         result['result'].append(copy.deepcopy(filler_dictionary))
 
-    return json.dumps(result['result'])
+    return json.dumps(result)
 
 @app.route('/api/food',methods=['GET','POST'])
 def foodserver():
