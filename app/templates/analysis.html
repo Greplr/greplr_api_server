@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+        {% block head %}
+        <style>
+      #map-canvas {
+        width: 500px;
+        height: 400px;
+      }
+    </style>
+    <!--script src="https://maps.googleapis.com/maps/api/js"></script-->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+
+        <!--script>
+var stockholm = new google.maps.LatLng(28.6100, 77.2300);
+var parliament = new google.maps.LatLng(28.6100, 77.2300);
+var marker;
+var map;
+
+function initialize() {
+  var mapOptions = {
+    zoom: 13,
+    center: stockholm
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+          mapOptions);
+
+  marker = new google.maps.Marker({
+    map:map,
+    animation: google.maps.Animation.DROP,
+    position: parliament
+  });
+  google.maps.event.addListener(marker, 'click', toggleBounce);
+}
+
+function toggleBounce() {
+
+  if (marker.getAnimation() != null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script-->
+        <script>
+var map, pointarray, heatmap;
+
+var taxiData = [
+        new google.maps.LatLng(24.0200, 72.5800),
+        new google.maps.LatLng(23.0300, 72.5900),
+        new google.maps.LatLng(23.0400, 72.5800),
+        new google.maps.LatLng(23.0300, 72.5700),
+        new google.maps.LatLng(23.300, 72.5800),
+
+        new google.maps.LatLng(30.7300, 76.7800),
+        new google.maps.LatLng(30.7400, 76.7800),
+
+        new google.maps.LatLng(26.8500, 80.9100),
+        new google.maps.LatLng(20.1500, 85.5000),
+        new google.maps.LatLng(20.1500, 85.5000),
+        new google.maps.LatLng(20.1500, 85.5000)
+];
+
+function initialize() {
+  var mapOptions = {
+    zoom: 4,
+    center: new google.maps.LatLng(21.0000, 78.0000),
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var pointArray = new google.maps.MVCArray(taxiData);
+
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: pointArray
+  });
+
+  heatmap.setMap(map);
+}
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
+function changeRadius() {
+  heatmap.set('radius', 9999);
+}
+
+function changeOpacity() {
+  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+        {% endblock %}
+
+
+        {% block content %}
+        {% if query==0 %}
+        <form action="/analysis" method="get">
+
+            <select name="products">
+              <option value="">Shampoos</option>
+              <option value="">Amul Milk</option>
+              <option value="">body deodrant</option>
+              <option value="">CChocolates</option>
+            </select>
+            <select name="state">
+            {% for i in states %}
+
+            <option value="{{ i  }}">{{ i }}</option>
+
+            {% endfor %}
+            </select>
+            <button type="submit"  value="submit" >Submit</button>
+        {% else %}
+            <p>You selected the state : {{ state }}</p>
+            <p>The data for this state is as follows :</p>
+        {% endif %}
+
+
+        </form>
+        <br>
+        <div id="map-canvas"></div>
+
+        {% endblock %}

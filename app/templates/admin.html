@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+        {% block head %}
+            <style type="text/css">
+
+
+            #ta{
+                width:100%;
+                height:100px;
+            }
+            .modal-body{
+                text-align: center;
+            }
+            .right{
+                float:right;
+            }
+            img{
+                height:100px;
+            }
+            </style>
+        {% endblock %}
+
+        {% block content %}
+        	<br>
+
+        <p align="center">Welcome to the Admin Panel
+        <br>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-default btn-lg right fixed"  data-toggle="modal" data-target="#myModal">
+                Send Push notification to App users
+            </button>
+        </p>
+
+        	<br><br>
+        	<!-- Modal -->
+        	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        	  <div class="modal-dialog">
+        	    <div class="modal-content">
+        	      <div class="modal-header">
+        	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        	        <h4 class="modal-title" id="myModalLabel">Send Push Notification to App users</h4>
+        	      </div>
+        	      <div class="modal-body">
+        	        <textarea id="ta"></textarea>
+                    
+        	      </div>
+        	      <div class="modal-footer">
+        	        <button id="btn" type="button" class="btn btn-success btn-lg">Push</button>
+        	      </div>
+        	    </div>
+        	  </div>
+        	</div>
+            The top reports from users are here:
+
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+            {% for i in arr %}
+                <li>
+                    <blockquote class="twitter-tweet" lang="en"><p>{{i.text}}<a href="http://t.co/QdFqlimgAO">{{i.picture}}</a></p>&mdash; Jaago (@jaaag0) <a href="https://twitter.com/jaaag0/status/{{i.id}}"></a></blockquote>
+                    
+                </li>
+            {% endfor %}
+        {% endblock %}
+
+{% block script %}
+	<script type="text/javascript">
+	
+	$('#btn').click(function(){
+		var msg = $('#ta').val();
+	  $.ajax({
+	          type: "GET",
+	          url: "/api/push",
+	          data: "msg="+msg,
+	          success: function(data) {
+	          		console.log(data);
+	          		window.location.reload();
+	              //function called when the server responds
+	          }
+	      });
+	  
+	});
+	</script>
+{% endblock %}
