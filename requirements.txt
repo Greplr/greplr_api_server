@@ -1,9 +1,1 @@
-flask
-bs4
-lxml
---upgrade lxml
-cssselect
-git+https://github.com/dgrtwo/ParsePy.git
-rauth
-flask-login
-PyDrive
+geopy

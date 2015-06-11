@@ -6,12 +6,18 @@ import copy
 import flask, flask.views
 from flask import render_template,request,make_response,redirect,Response, url_for
 import json,urllib2,xml,datetime,hashlib,time,requests,base64
-
+from flask import jsonify
 from base64 import b64encode
 import requests
 import hashlib
 
+
 from credentials import client_id,client_secret, uber_credentials
+
+from credentials import google_places_api_key
+from utils import get_dict,distance
+from geopy.distance import vincenty
+
 
 
 from flask.ext.httpauth import HTTPBasicAuth
@@ -32,6 +38,7 @@ def get_pw(username):
 @app.route('/api')
 def apiserver():
     return "fooo"
+
 
 @app.route('/api/travel', methods=['GET', 'POST'])
 def travel_api():
@@ -95,3 +102,30 @@ def travel_api():
         result['result'].append(copy.deepcopy(filler_dictionary))
 
     return json.dumps(result['result'])
+
+@app.route('/api/food',methods=['GET','POST'])
+def foodserver():
+    if request.method == 'GET':
+        lat = request.args.get('lat')
+        long = request.args.get('long')
+    else:
+        lat = request.form['lat']
+        long = request.form['long']
+    
+    url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
+        &location=%s,%s\
+        &radius=1000\
+        &type=bakery|cafe|department_store|food|grocery_or_supermarket'''%(google_places_api_key,lat,long)
+    
+    results_json = requests.get(url).json()
+    arr =[]
+    for i in results_json['results']:
+        d = get_dict(id=i['place_id'],\
+            name=i['name'],\
+            address=i['vicinity'],\
+            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
+            type=i['types']
+            )
+        arr.append(d)
+
+    return jsonify(data=arr)
