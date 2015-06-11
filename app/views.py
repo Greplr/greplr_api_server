@@ -19,15 +19,17 @@ from geopy.distance import vincenty
 from flask.ext.httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
-users={
-    "admin":"kuchbhi123"
+users = {
+    "admin": "kuchbhi123"
 }
+
 
 @auth.get_password
 def get_pw(username):
     if username in users:
         return users.get(username)
     return None
+
 
 @app.route('/api')
 def apiserver():
