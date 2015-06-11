@@ -1,8 +1,9 @@
-pip install bs4
-pip install lxml
-pip install --upgrade lxml
-pip install cssselect
-pip install git+https://github.com/dgrtwo/ParsePy.git
-pip install rauth
-pip install flask-login
-pip install PyDrive
+flask
+bs4
+lxml
+--upgrade lxml
+cssselect
+git+https://github.com/dgrtwo/ParsePy.git
+rauth
+flask-login
+PyDrive
