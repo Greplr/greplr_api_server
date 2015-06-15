@@ -19,7 +19,7 @@ from geopy.distance import vincenty
 
 from flask.ext.httpauth import HTTPBasicAuth
 
-from travel import uber_api
+from travel import *
 
 
 auth = HTTPBasicAuth()
@@ -43,13 +43,9 @@ def apiserver():
 
 @app.route('/api/travel', methods=['GET', 'POST'])
 def travel_api():
-
-    try:
-        result = uber_api(request.form['latitude'], request.form['longitude'])
-    except:
-        result = {
-            'result': []
-        }
+    result = {
+        'result': []
+    }
 
     ''' ========================Example JSON to be sent===============
     result = {
@@ -64,6 +60,20 @@ def travel_api():
         ],
     }
     =============================================================='''
+
+    try:
+        list_of_result = uber_api(request.form['latitude'], request.form['longitude'])
+        for res in list_of_result:
+            result['result'].append(copy.deepcopy(res))
+    except:
+        pass
+
+    try:
+        list_of_result = taxi_for_sure_api(request.form['latitude'], request.form['longitude'])
+        for res in list_of_result:
+            result['result'].append(copy.deepcopy(res))
+    except:
+        pass
 
     return json.dumps(result)
 

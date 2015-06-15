@@ -60,4 +60,31 @@ def uber_api(latitude, longitude):
 
         result['result'].append(copy.deepcopy(filler_dictionary))
 
-    return result
+    return result['result']
+
+
+def taxi_for_sure_api(latitude, longitude):
+
+    url = 'http://iospush.taxiforsure.com/getNearestDriversForApp/?density=320&appVersion=4.1.1&longitude='\
+          + str(longitude) +'&latitude=' + str(latitude)
+
+    final_list = []
+    filler_dict = {}
+
+    data = requests.get(url)
+    output = data.json()['response_data']['data']
+
+    for res in output:
+        filler_dict['provider'] = 'TaxiForSure'
+        filler_dict['time_of_arrival'] = int(res['duration'])
+        filler_dict['price_per_km'] = '16'
+        filler_dict['display_name'] = res['carType']
+        filler_dict['min_price'] = '50'
+
+        final_list.append(copy.deepcopy(filler_dict))
+
+    return final_list
+
+
+if __name__ == '__main__':
+    print taxi_for_sure_api(28.739137, 77.124717)
