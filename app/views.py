@@ -53,6 +53,17 @@ def reverse_geocode():
     listData = data.json()
     return data.text
 
+@app.route('/geo', methods=['POST'])
+def geocoding():
+    query = request.form['location']
+
+    url = 'https://api.mapmyindia.com/v3?fun=geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&q='+str(query)
+
+    data = requests.get(url)
+
+    listData = data.json()
+    return data.text
+
 @app.route('/api/travel', methods=['GET', 'POST'])
 def travel_api():
     result = {
