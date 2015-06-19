@@ -41,6 +41,18 @@ def apiserver():
     return "fooo"
 
 
+@app.route('/georev', methods=['POST'])
+def reverse_geocode():
+    lat = request.form['latitude']
+    lon = request.form['longitude']
+
+    url = 'https://api.mapmyindia.com/v3?fun=rev_geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&lng='+str(lon)+'&lat='+str(lat)
+
+    data = requests.get(url)
+
+    listData = data.json()
+    return data.text
+
 @app.route('/api/travel', methods=['GET', 'POST'])
 def travel_api():
     result = {
@@ -86,12 +98,12 @@ def foodserver():
     else:
         lat = request.form['lat']
         long = request.form['long']
-    
+
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=1000\
         &type=bakery|cafe|department_store|food|grocery_or_supermarket'''%(google_places_api_key,lat,long)
-    
+
     results_json = requests.get(url).json()
     arr =[]
     for i in results_json['results']:
