@@ -103,7 +103,7 @@ def travel_bus():
 
     src = request.form['src']
     dest = request.form['dest']
-    date_leave = request.form['day']
+    date_leave = request.form['date']
 
     result = goibibo_api(src, dest, date_leave)
 
