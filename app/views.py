@@ -64,39 +64,47 @@ def geocoding():
     listData = data.json()
     return data.text
 
-@app.route('/api/travel', methods=['GET', 'POST'])
+@app.route('/api/travel/cabs', methods=['GET', 'POST'])
 def travel_api():
-    result = {
-        'result': []
-    }
+    result = []
 
     ''' ========================Example JSON to be sent===============
-    result = {
-        'result': [
+    result = [
             {
                 'provider': 'provider_name',
                 'time_of_arrival': 'time in minutes',
                 'price_per_km': 'price in INR/Km',
                 'display_name': 'Black/X/GO',
                 'min_price': 'minimum_price',
-            }
-        ],
-    }
+            },
+        ]
     =============================================================='''
 
     try:
-        list_of_result = uber_api(request.form['latitude'], request.form['longitude'])
+        list_of_result = uber_api(request.form['lat'], request.form['lng'])
         for res in list_of_result:
-            result['result'].append(copy.deepcopy(res))
+            result.append(copy.deepcopy(res))
     except:
         pass
 
     try:
-        list_of_result = taxi_for_sure_api(request.form['latitude'], request.form['longitude'])
+        list_of_result = taxi_for_sure_api(request.form['lat'], request.form['lng'])
         for res in list_of_result:
-            result['result'].append(copy.deepcopy(res))
+            result.append(copy.deepcopy(res))
     except:
         pass
+
+    return json.dumps(result)
+
+
+@app.route('/api/travel/bus', methods=['POST'])
+def travel_bus():
+
+    src = request.form['src']
+    dest = request.form['dest']
+    date_leave = request.form['day']
+
+    result = goibibo_api(src, dest, date_leave)
 
     return json.dumps(result)
 

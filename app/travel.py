@@ -26,20 +26,6 @@ def uber_api(latitude, longitude):
     response_from_uber = requests.get(url, params=parameters)
     data = response_from_uber.json()
 
-    ''' ========================Example JSON to be sent===============
-    result = {
-        'result': [
-            {
-                'provider': 'provider_name',
-                'time_of_arrival': 'time in minutes',
-                'price_per_km': 'price in INR/Km',
-                'display_name': 'Black/X/GO',
-                'min_price': 'minimum_price',
-            }
-        ],
-    }
-    =============================================================='''
-
     result = {
         'result': []
     }
@@ -85,6 +71,41 @@ def taxi_for_sure_api(latitude, longitude):
 
     return final_list
 
+
+def goibibo_api(src, dest, day):
+
+    url = 'http://developer.goibibo.com/api/bus/search/?app_id=3d427fd7&app_key=f6b88b898c2059604e9b26e5cf2fee7d&format=json'
+
+    params = {
+        'source': src,
+        'destination': dest,
+        'dateofdeparture': day,
+    }
+
+    data = requests.get(url, params=params)
+
+    result_list = []
+    filler_dict = {}
+
+    res = data.json()
+
+    print len(res['data']['onwardflights'])
+
+    for x in res['data']['onwardflights']:
+        filler_dict['origin'] = x['origin']
+        filler_dict['destination'] = x['destination']
+        filler_dict['seat'] = x['seat']
+        filler_dict['duration'] = x['duration']
+        filler_dict['condition'] = x['busCondition']
+        filler_dict['fare'] = x['fare']['totalfare']
+        filler_dict['bustype'] = x['BusType']
+        filler_dict['travelagency'] = x['TravelsName']
+        filler_dict['arrdate'] = x['arrdate']
+        filler_dict['depdate'] = x['depdate']
+
+        result_list.append(copy.deepcopy(filler_dict))
+
+    return result_list
 
 if __name__ == '__main__':
     print taxi_for_sure_api(28.739137, 77.124717)
