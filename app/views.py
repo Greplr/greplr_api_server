@@ -141,7 +141,7 @@ def food_restaurant():
             distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
             type=i['types'],
             lat = i['geometry']['location']['lat'],
-            long = i['geometry']['location']['lng']
+            lng = i['geometry']['location']['lng']
             )
         arr.append(copy.deepcopy(d))
 
@@ -167,7 +167,7 @@ def food_bar():
             distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
             type=i['types'],
             lat = i['geometry']['location']['lat'],
-            long = i['geometry']['location']['lng']
+            lng = i['geometry']['location']['lng']
             )
         arr.append(copy.deepcopy(d))
 
@@ -193,7 +193,7 @@ def food_cafe():
             distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
             type=i['types'],
             lat = i['geometry']['location']['lat'],
-            long = i['geometry']['location']['lng']
+            lng = i['geometry']['location']['lng']
             )
         arr.append(copy.deepcopy(d))
 
