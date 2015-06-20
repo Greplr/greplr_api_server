@@ -124,7 +124,7 @@ def travel_flight():
 @app.route('/api/food/restaurants', methods=['POST'])
 def food_restaurant():
     lat = request.form['lat']
-    long = request.form['long']
+    long = request.form['lng']
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
@@ -151,7 +151,7 @@ def food_restaurant():
 @app.route('/api/food/bar', methods=['POST'])
 def food_bar():
     lat = request.form['lat']
-    long = request.form['long']
+    long = request.form['lng']
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
@@ -177,7 +177,7 @@ def food_bar():
 @app.route('/api/food/cafe', methods=['POST'])
 def food_cafe():
     lat = request.form['lat']
-    long = request.form['long']
+    long = request.form['lng']
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
