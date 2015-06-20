@@ -70,6 +70,10 @@ def taxi_for_sure_api(latitude, longitude):
         filler_dict['price_per_km'] = '16'
         filler_dict['display_name'] = res['carType']
         filler_dict['min_price'] = '50'
+        try:
+            filler_dict['product_id'] = res['product_id']
+        except:
+            filler_dict['product_id'] = ''
 
         final_list.append(copy.deepcopy(filler_dict))
 
