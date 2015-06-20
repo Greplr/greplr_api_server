@@ -20,6 +20,7 @@ from geopy.distance import vincenty
 from flask.ext.httpauth import HTTPBasicAuth
 
 from travel import *
+from food import *
 
 
 auth = HTTPBasicAuth()
@@ -120,19 +121,42 @@ def travel_flight():
 
     return json.dumps(result)
 
-@app.route('/api/food',methods=['GET','POST'])
-def foodserver():
-    if request.method == 'GET':
-        lat = request.args.get('lat')
-        long = request.args.get('long')
-    else:
-        lat = request.form['lat']
-        long = request.form['long']
+@app.route('/api/food/restaurants', methods=['POST'])
+def food_restaurant():
+    lat = request.form['lat']
+    long = request.form['long']
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=1000\
-        &type=bakery|cafe|department_store|food|grocery_or_supermarket'''%(google_places_api_key,lat,long)
+        &type=department_store|food|grocery_or_supermarket''' %(google_places_api_key,lat,long)
+
+    results_json = requests.get(url).json()
+    print results_json
+    arr =[]
+    for i in results_json['results']:
+        d = get_dict(id=i['place_id'],\
+            name=i['name'],\
+            address=i['vicinity'],\
+            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
+            type=i['types'],
+            lat = i['geometry']['location']['lat'],
+            long = i['geometry']['location']['lng']
+            )
+        arr.append(copy.deepcopy(d))
+
+    return json.dumps(arr)
+
+
+@app.route('/api/food/bar', methods=['POST'])
+def food_bar():
+    lat = request.form['lat']
+    long = request.form['long']
+
+    url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
+        &location=%s,%s\
+        &radius=1000\
+        &type=bar''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
     arr =[]
@@ -141,8 +165,36 @@ def foodserver():
             name=i['name'],\
             address=i['vicinity'],\
             distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
-            type=i['types']
+            type=i['types'],
+            lat = i['geometry']['location']['lat'],
+            long = i['geometry']['location']['lng']
             )
-        arr.append(d)
+        arr.append(copy.deepcopy(d))
 
-    return jsonify(data=arr)
+    return json.dumps(arr)
+
+
+@app.route('/api/food/cafe', methods=['POST'])
+def food_cafe():
+    lat = request.form['lat']
+    long = request.form['long']
+
+    url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
+        &location=%s,%s\
+        &radius=1000\
+        &type=bakery|cafe''' %(google_places_api_key,lat,long)
+
+    results_json = requests.get(url).json()
+    arr =[]
+    for i in results_json['results']:
+        d = get_dict(id=i['place_id'],\
+            name=i['name'],\
+            address=i['vicinity'],\
+            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
+            type=i['types'],
+            lat = i['geometry']['location']['lat'],
+            long = i['geometry']['location']['lng']
+            )
+        arr.append(copy.deepcopy(d))
+
+    return json.dumps(arr)
