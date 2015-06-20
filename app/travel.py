@@ -43,7 +43,10 @@ def uber_api(latitude, longitude):
             if y_data['display_name'] == x_data['display_name']:
                 filler_dictionary['price_per_km'] = y_data['price_details']['cost_per_distance']
                 filler_dictionary['min_price'] = y_data['price_details']['minimum']
-                filler_dictionary['product_id'] = y_data['product_id']
+                try:
+                    filler_dictionary['product_id'] = y_data['product_id']
+                except:
+                    filler_dictionary['product_id'] = ''
 
         result['result'].append(copy.deepcopy(filler_dictionary))
 
