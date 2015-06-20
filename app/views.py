@@ -108,6 +108,17 @@ def travel_bus():
 
     return json.dumps(result)
 
+@app.route('/api/travel/flight', methods=['POST'])
+def travel_flight():
+
+    src = request.form['src']
+    dest = request.form['dest']
+    date = request.form['date']
+    num = request.form['adults']
+
+    result = goibibo_flight(src, dest, date, num)
+
+    return json.dumps(result)
 
 @app.route('/api/food',methods=['GET','POST'])
 def foodserver():

@@ -107,5 +107,44 @@ def goibibo_api(src, dest, day):
 
     return result_list
 
+
+def goibibo_flight(src, dest, date, num):
+
+    url = 'http://developer.goibibo.com/api/search/?app_id=3d427fd7&app_key=f6b88b898c2059604e9b26e5cf2fee7d'
+
+    params = {
+        'infants': '0',
+        'adults': num,
+        'children': '0',
+        'seatingclass': 'E',
+        'dateofdeparture': date,
+        'destination': dest,
+        'source': src,
+        'format': 'json',
+    }
+
+    data = requests.get(url, params=params)
+
+    res = data.json()
+
+    result_list = []
+    filler_dict = {}
+
+    for x in res['data']['onwardflights']:
+        filler_dict['origin'] = x['origin']
+        filler_dict['fare'] = x['fare']['totalfare']
+        filler_dict['destination'] = x['destination']
+        filler_dict['duration'] = x['duration']
+        filler_dict['flightnum'] = x['flightno']
+        filler_dict['seatingclass'] = x['seatingclass']
+        filler_dict['warnings'] = x['warnings']
+        filler_dict['airline'] = x['airline']
+        filler_dict['depdate'] = x['depdate']
+        filler_dict['arrdate'] = x['arrdate']
+
+        result_list.append(copy.deepcopy(filler_dict))
+
+    return result_list
+
 if __name__ == '__main__':
     print taxi_for_sure_api(28.739137, 77.124717)
