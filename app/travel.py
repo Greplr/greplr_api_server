@@ -115,10 +115,17 @@ def goibibo_api(src, dest, day):
 
     return result_list
 
+data_code = {"hyderabad": "HYD", "madurai": "IXM", "hubli": "HBX", "coimbatore": "CJB", "rae bareli": "BEK", "agartala": "IXA", "jamshedpur": "IXW", "daman": "NMB", "calcutta (kolkata)": "CCU", "varanasi": "VNS", "ludhiana": "LUH", "agra": "AGR", "vishakhapatnam": "VTZ", "new delhi": "DEL", "pondicherry": "PNY", "ranchi": "IXR", "bhavnagar": "BHU", "jamnagar": "JGA", "bagdogra": "IXB", "goa": "GOI", "vadodara": "BDQ", "amritsar": "ATQ", "kanpur": "KNU", "patna": "PAT", "silchar": "IXS", "shillong": "SHL", "udaipur": "UDR", "gauhati": "GAU", "dimapur": "DMU", "bhopal": "BHO", "tezpur": "TEZ", "chandigarh": "IXC", "vijayawada": "VGA", "khajuraho": "HJR", "dibrugarh": "DIB", "tirupati": "TIR", "jammu": "IXJ", "leh": "IXL", "poona (pune)": "PNQ", "jodhpur": "JDH", "dehradun": "DED", "port blair": "IXZ", "jorhat": "JRH", "nasik": "ISK", "trivandrum": "TRV", "allahabad": "IXD", "porbandar": "PBD", "tiruchirapally": "TRZ", "aurangabad": "IXU", "bangalore": "BLR", "srinagar": "SXR", "ahmedabad": "AMD", "bhubaneswar": "BBI", "cochin": "COK", "indore": "IDR", "lucknow": "LKO", "mumbai (bombay)": "BOM", "surat": "STV", "chennai(madras)": "MAA", "jaipur": "JAI", "nagpur": "NAG", "gwalior": "GWL", "kozhikode (calicut)": "CCJ", "bhuj": "BHJ", "nanded": "NDC", "diu": "DIU", "rajkot": "RAJ", "imphal": "IMF", "mangalore": "IXE", "puttaparthi": "PUT"}
 
 def goibibo_flight(src, dest, date, num):
 
     url = 'http://developer.goibibo.com/api/search/?app_id=3d427fd7&app_key=f6b88b898c2059604e9b26e5cf2fee7d'
+
+    '''try:
+        source = data_code[src.lower()]
+        destination = data_code[dest.lower()]
+    except:
+        return []'''
 
     params = {
         'infants': '0',
