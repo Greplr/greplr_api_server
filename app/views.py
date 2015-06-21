@@ -247,3 +247,23 @@ def movies():
     result = res['BookMyShow']['arrEvent']
 
     return json.dumps(result)
+
+@app.route('/api/events/plays', methods=['GET'])
+def movies():
+    url = 'http://data-in.bookmyshow.com/'
+
+    params = {
+        'cmd': 'GETEVENTLIST',
+        'f': 'json',
+        't': '67x1xa33b4x422b361ba',
+        'rc': 'NCR',
+        'et': 'PL',
+        'src': 'GURG',
+    }
+
+    data = requests.get(url, params=params)
+    res = data.json()
+
+    result = res['BookMyShow']['arrEvent']
+
+    return json.dumps(result)
