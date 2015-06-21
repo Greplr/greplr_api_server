@@ -238,6 +238,7 @@ def movies():
         't': '67x1xa33b4x422b361ba',
         'rc': 'NCR',
         'et': 'MT',
+        'src': 'GURG',
     }
 
     data = requests.get(url, params=params)
