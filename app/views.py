@@ -10,8 +10,8 @@ from flask import jsonify
 from base64 import b64encode
 import requests
 import hashlib
-
-from credentials import client_id,client_secret, uber_credentials
+from models import Feedback
+from credentials import client_id,client_secret, uber_credentials, parse_credentials
 
 from credentials import google_places_api_key
 from utils import get_dict,distance
@@ -174,6 +174,34 @@ def food_bar():
     return json.dumps(arr)
 
 
+@app.route('/api/feedback', methods=['POST'])
+def feedback():
+    feed = request.form['feedback']
+    user = request.form['user']
+    field = request.form['field']
+
+    senti = sentiment(feed)
+
+    u = Feedback(user=user, feed=feed, field=field, rating=senti)
+    u.save()
+
+    return json.dumps([{'status': 'done'}])
+
+
+def sentiment(data):
+
+    url = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1'
+
+    params = {
+        'apikey': '17485be9-1aa8-42d2-959c-eca724679547',
+        'text': data
+    }
+
+    res = requests.post(url, data=params)
+
+    return float(res.json()['aggregate']['score'])*5.0
+
+
 @app.route('/api/food/cafe', methods=['POST'])
 def food_cafe():
     lat = request.form['lat']
@@ -198,3 +226,23 @@ def food_cafe():
         arr.append(copy.deepcopy(d))
 
     return json.dumps(arr)
+
+
+@app.route('/api/events/movies', methods=['GET'])
+def movies():
+    url = 'http://data-in.bookmyshow.com/'
+
+    params = {
+        'cmd': 'GETEVENTLIST',
+        'f': 'json',
+        't': '67x1xa33b4x422b361ba',
+        'rc': 'NCR',
+        'et': 'MT',
+    }
+
+    data = requests.get(url, params=params)
+    res = data.json()
+
+    result = res['BookMyShow']['arrEvent']
+
+    return json.dumps(result)

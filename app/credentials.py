@@ -8,3 +8,9 @@ uber_credentials = {
     'server_token': '0TZ3-VeOGfHCu9_zTmjeLLiRQQ58-QuosGnbxyH3',
     'secret': 'kADzIMxf_EJKQfncy1y5PfcRX9ksMtU4zMu7tvIF'
 }
+
+parse_credentials = {
+         "application_id": "MPr0ZZhOIOMhyTIwm9PJ1L73s1E09wwRuIsIzyk7",
+         "rest_api_key": "PANsWgfWhtQ4Ot2Xyehz5z1FM9CahdS7d9LFBrrY",
+         "master_key": "nFqgTG6oIdCLJXDdbcurLcHYBFvjXCoUJ1Z1jdx2"
+}
