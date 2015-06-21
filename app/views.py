@@ -249,7 +249,7 @@ def movies():
     return json.dumps(result)
 
 @app.route('/api/events/plays', methods=['GET'])
-def movies():
+def plays():
     url = 'http://data-in.bookmyshow.com/'
 
     params = {
@@ -269,7 +269,7 @@ def movies():
     return json.dumps(result)
 
 @app.route('/api/events/cultural', methods=['GET'])
-def movies():
+def cultural():
     url = 'http://data-in.bookmyshow.com/'
 
     params = {
