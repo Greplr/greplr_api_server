@@ -21,6 +21,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 
 from travel import *
 from food import *
+from shop import *
 
 from bs4 import BeautifulSoup as BS
 
@@ -290,45 +291,32 @@ def cultural():
     return json.dumps(result)
 
 
-data_for_scrape = [
-    {
-        'name': 'Biryani Blues',
-        'cuisines': 'Biryani, Hyderabadi, South Indian',
-        'image': 'https://assets.foodpanda.in/dynamic/images/vendors/n4hm_sqp.jpg?v=20150422163403',
-        'url': 'https://www.foodpanda.in/restaurant/n4hm/biryani-blues',
-        'rating': '3.7'
-    },
-    {
-        'name': 'Ginger Garlic (Arcadia)',
-        'cuisines': 'Chinese, Pan-Asian',
-        'image': 'https://assets.foodpanda.in/dynamic/images/vendors/v0bg_1418019779_sqp.jpg',
-        'url': 'https://www.foodpanda.in/restaurant/v0bg/ginger-garlic-arcadia',
-        'rating': '3.2'
-    },
-    {
-        'name': 'Grandma\'s Kitchen',
-        'cuisines': 'Fast Food, North Indian',
-        'image': 'https://assets.foodpanda.in/layout/themes/capricciosa_foodpanda/images/en/no_pic_logo.png?v=1427741626',
-        'url': 'https://www.foodpanda.in/restaurant/v6uz/grandma-s-kitchen',
-        'rating': '0.0'
-    },
-    {
-        'name': 'Yo! China (Supermart - 1, Gurgaon)',
-        'cuisines': 'Chinese, Desserts, North Indian',
-        'image': 'https://assets.foodpanda.in/dynamic/images/vendors/n0rf_sqp.jpg?v=20150422164444',
-        'url': 'https://www.foodpanda.in/restaurant/n0rf/yo-china-supermart-1-gurgaon',
-        'rating': '3.1'
-    },
-    {
-        'name': 'Shawarma House',
-        'cuisines': 'Middle Eastern',
-        'image': 'https://assets.foodpanda.in/layout/themes/capricciosa_foodpanda/images/en/no_pic_logo.png?v=1427741626',
-        'url': 'https://www.foodpanda.in/restaurant/n5yk/shawarma-house',
-        'rating': '3.4'
-    },
-]
+@app.route('/api/shop/offers', methods=['GET'])
+def offers():
 
-@app.route('/api/food/order', methods=['GET'])
-def scrape_foodpanda():
+    res = []
 
-    return json.dumps(data_for_scrape)
+    try:
+        res += flipkart_offers()
+    except:
+        pass
+
+    return json.dumps(res)
+
+
+@app.route('/api/shop/search', methods=['GET'])
+def search_items():
+
+    try:
+        query = request.args.get('q')
+    except:
+        query = 'laptop'
+
+    res = []
+
+    try:
+        res += flipkart_search(query)
+    except:
+        pass
+
+    return json.dumps(res)
