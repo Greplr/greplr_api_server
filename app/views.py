@@ -32,6 +32,15 @@ users = {
 }
 
 
+############################################CACHING##############################################
+
+@app.after_request
+def cache(response):
+    response.cache_control.max_age = 60
+    return response
+
+#################################################################################################
+
 @auth.get_password
 def get_pw(username):
     if username in users:
