@@ -110,7 +110,7 @@ def travel_api():
 
     final_result = sorted(result, key=lambda k: k['time_of_arrival'])
 
-    return json.dumps(result)
+    return json.dumps(final_result)
 
 
 @app.route('/api/travel/bus', methods=['POST'])
