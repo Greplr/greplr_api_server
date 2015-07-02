@@ -43,4 +43,4 @@ def flipkart_search(query):
 
 
 if __name__=='__main__':
-    flipkart_search('laptop')
+    print flipkart_search('laptop')

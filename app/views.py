@@ -22,6 +22,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from travel import *
 from food import *
 from shop import *
+from food_mmx import food_mmx
 
 from bs4 import BeautifulSoup as BS
 
@@ -36,7 +37,8 @@ users = {
 
 @app.after_request
 def cache(response):
-    response.cache_control.max_age = 60
+    #response.cache_control.max_age = 60
+    response.headers['Cache-Control'] = 'public, max-age=60, only-if-cached, max-stale=0'
     return response
 
 #################################################################################################
@@ -105,6 +107,8 @@ def travel_api():
             result.append(copy.deepcopy(res))
     except:
         pass
+
+    final_result = sorted(result, key=lambda k: k['time_of_arrival'])
 
     return json.dumps(result)
 
@@ -329,3 +333,16 @@ def search_items():
         pass
 
     return json.dumps(res)
+
+
+@app.route('/api/foodmmx/nearme', methods=['GET'])
+def for_mmx():
+
+    try:
+        lat = str(request.args.get('lat'))
+        lng = str(request.args.get('lng'))
+    except:
+        lat = '28.734371'
+        lng = '77.1197519'
+
+    return food_mmx(lat, lng)
