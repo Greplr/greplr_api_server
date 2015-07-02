@@ -47,9 +47,19 @@ def flipkart_search(query):
         filler_dict['title'] = x['productBaseInfo']['productIdentifier']['categoryPaths']['categoryPath'][0][0]['title']
         filler_dict['productId'] = x['productBaseInfo']['productIdentifier']['productId']
         for keys in x['productBaseInfo']['productAttributes']:
-            filler_dict[keys] = x['productBaseInfo']['productAttributes'][keys]
+            if keys == 'imageUrls':
+                filler_dict[keys] = {}
+                #print x['productBaseInfo']['productAttributes'][keys]
+                for i in x['productBaseInfo']['productAttributes'][keys]:
+                    #print '_'+i, "++++++++++++=", keys
+                    name = '_'+i
+                    #print x['productBaseInfo']['productAttributes'][keys][i]
+                    filler_dict[keys][name] = x['productBaseInfo']['productAttributes'][keys][i]
+            else:
+                filler_dict[keys] = x['productBaseInfo']['productAttributes'][keys]
 
         final_list.append(copy.deepcopy(filler_dict))
+        #print final_list
 
     return final_list
 
