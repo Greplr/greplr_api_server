@@ -120,7 +120,10 @@ def travel_bus():
     dest = request.form['dest']
     date_leave = request.form['date']
 
-    result = goibibo_api(src, dest, date_leave)
+    x = date_leave.split('-')
+    date = x[2]+x[1]+x[0]
+
+    result = goibibo_api(src, dest, date)
 
     return json.dumps(result)
 
@@ -131,6 +134,9 @@ def travel_flight():
     dest = request.form['dest']
     date = request.form['date']
     num = request.form['adults']
+
+    x = date.split('-')
+    date = x[2]+x[1]+x[0]
 
     result = goibibo_flight(src, dest, date, num)
 
