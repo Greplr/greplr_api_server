@@ -22,7 +22,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from travel import *
 from food import *
 from shop import *
-from food_mmx import food_mmx
+from food_mmx import food_mmx, restaurant_details
 
 from bs4 import BeautifulSoup as BS
 
@@ -346,3 +346,13 @@ def for_mmx():
         lng = '77.1197519'
 
     return food_mmx(lat, lng)
+
+@app.route('/api/foodmmx/details', methods=['GET'])
+def detailsRestaurant():
+
+    try:
+        res = restaurant_details(str(request.args.get('id')))
+    except:
+        res = {}
+
+    return res
