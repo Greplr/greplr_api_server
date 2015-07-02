@@ -37,9 +37,21 @@ def flipkart_search(query):
     r = requests.get(url, headers=headers)
     data = r.json()
 
-    queryData = data['productInfoList']
+    filler_dict = {}
+    final_list = []
 
-    return queryData
+    queryData = data['productInfoList']
+    for x in queryData:
+        #print x['productBaseInfo']
+        #filler_dict['title'] = x['productBaseInfo']['productIdentifier']['categoryPaths']['categoryPath'][0]['title']
+        filler_dict['title'] = x['productBaseInfo']['productIdentifier']['categoryPaths']['categoryPath'][0][0]['title']
+        filler_dict['productId'] = x['productBaseInfo']['productIdentifier']['productId']
+        for keys in x['productBaseInfo']['productAttributes']:
+            filler_dict[keys] = x['productBaseInfo']['productAttributes'][keys]
+
+        final_list.append(copy.deepcopy(filler_dict))
+
+    return final_list
 
 
 if __name__=='__main__':
