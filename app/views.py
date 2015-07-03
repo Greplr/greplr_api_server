@@ -22,7 +22,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from travel import *
 from food import *
 from shop import *
-from food_mmx import food_mmx, restaurant_details
+from food_mmx import *
 
 from bs4 import BeautifulSoup as BS
 
@@ -141,6 +141,18 @@ def travel_flight():
     result = goibibo_flight(src, dest, date, num)
 
     return json.dumps(result)
+
+
+@app.route('/api/food/order', methods=['GET'])
+def foodpanda_order():
+    try:
+        lat = request.args.get('lat')
+        lng = request.args.get('lng')
+        return foodpanda(lat=lat, lng=lng)
+    except:
+        id = request.args.get('id')
+        return foodpanda(id=id)
+
 
 @app.route('/api/food/restaurants', methods=['POST'])
 def food_restaurant():
