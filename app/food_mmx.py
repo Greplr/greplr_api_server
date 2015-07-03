@@ -22,12 +22,13 @@ def food_mmx(lat, lng):
     #print r, "=============================================================="
     #print url, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     data = r.json()
+    return json.dumps(data)
 
-    list_of_rest = data['results']
+    #list_of_rest = data['results']
     #print sorted(list_of_rest, key=lambda x: x[u'result'][u'distance_actual'])
     #### Already sorted ####
 
-    return json.dumps(list_of_rest)
+    #return json.dumps(list_of_rest)
 
 def restaurant_details(id):
     url = 'https://api.zomato.com/v1/restaurant.json/'+ str(id)

@@ -55,10 +55,10 @@ def apiserver():
     return "fooo"
 
 
-@app.route('/georev', methods=['POST'])
+@app.route('/georev', methods=['GET'])
 def reverse_geocode():
-    lat = request.form['latitude']
-    lon = request.form['longitude']
+    lat = request.args.get('latitude')
+    lon = request.args.get('longitude')
 
     url = 'https://api.mapmyindia.com/v3?fun=rev_geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&lng='+str(lon)+'&lat='+str(lat)
 
@@ -67,9 +67,9 @@ def reverse_geocode():
     listData = data.json()
     return data.text
 
-@app.route('/geo', methods=['POST'])
+@app.route('/geo', methods=['GET'])
 def geocoding():
-    query = request.form['location']
+    query = request.args.get('location')
 
     url = 'https://api.mapmyindia.com/v3?fun=geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&q='+str(query)
 
@@ -78,7 +78,7 @@ def geocoding():
     listData = data.json()
     return data.text
 
-@app.route('/api/travel/cabs', methods=['GET', 'POST'])
+@app.route('/api/travel/cabs', methods=['GET', 'GET'])
 def travel_api():
     result = []
 
@@ -95,14 +95,14 @@ def travel_api():
     =============================================================='''
 
     try:
-        list_of_result = uber_api(request.form['lat'], request.form['lng'])
+        list_of_result = uber_api(request.args.get('lat'), request.args.get('lng'))
         for res in list_of_result:
             result.append(copy.deepcopy(res))
     except:
         pass
 
     try:
-        list_of_result = taxi_for_sure_api(request.form['lat'], request.form['lng'])
+        list_of_result = taxi_for_sure_api(request.args.get('lat'), request.args.get('lng'))
         for res in list_of_result:
             result.append(copy.deepcopy(res))
     except:
@@ -113,12 +113,12 @@ def travel_api():
     return json.dumps(final_result)
 
 
-@app.route('/api/travel/bus', methods=['POST'])
+@app.route('/api/travel/bus', methods=['GET'])
 def travel_bus():
 
-    src = request.form['src']
-    dest = request.form['dest']
-    date_leave = request.form['date']
+    src = request.args.get('src')
+    dest = request.args.get('dest')
+    date_leave = request.args.get('date')
 
     x = date_leave.split('-')
     date = x[2]+x[1]+x[0]
@@ -127,13 +127,13 @@ def travel_bus():
 
     return json.dumps(result)
 
-@app.route('/api/travel/flight', methods=['POST'])
+@app.route('/api/travel/flight', methods=['GET'])
 def travel_flight():
 
-    src = request.form['src']
-    dest = request.form['dest']
-    date = request.form['date']
-    num = request.form['adults']
+    src = request.args.get('src')
+    dest = request.args.get('dest')
+    date = request.args.get('date')
+    num = request.args.get('adults')
 
     x = date.split('-')
     date = x[2]+x[1]+x[0]
@@ -154,10 +154,10 @@ def foodpanda_order():
         return foodpanda(id=id)
 
 
-@app.route('/api/food/restaurants', methods=['POST'])
+@app.route('/api/food/restaurants', methods=['GET'])
 def food_restaurant():
-    lat = request.form['lat']
-    long = request.form['lng']
+    lat = request.args.get('lat')
+    long = request.args.get('lng')
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
@@ -181,10 +181,10 @@ def food_restaurant():
     return json.dumps(arr)
 
 
-@app.route('/api/food/bar', methods=['POST'])
+@app.route('/api/food/bar', methods=['GET'])
 def food_bar():
-    lat = request.form['lat']
-    long = request.form['lng']
+    lat = request.args.get('lat')
+    long = request.args.get('lng')
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
@@ -235,10 +235,10 @@ def sentiment(data):
     return float(res.json()['aggregate']['score'])*5.0
 
 
-@app.route('/api/food/cafe', methods=['POST'])
+@app.route('/api/food/cafe', methods=['GET'])
 def food_cafe():
-    lat = request.form['lat']
-    long = request.form['lng']
+    lat = request.args.get('lat')
+    long = request.args.get('lng')
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
