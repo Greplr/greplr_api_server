@@ -10,7 +10,7 @@ from flask import jsonify
 from base64 import b64encode
 import requests
 import hashlib
-from models import Feedback
+from models import Feedback, Subscribe, Contact
 from credentials import client_id,client_secret, uber_credentials, parse_credentials
 
 from credentials import google_places_api_key
@@ -18,6 +18,7 @@ from utils import get_dict,distance
 from geopy.distance import vincenty
 
 from flask.ext.httpauth import HTTPBasicAuth
+import sendgrid
 
 from travel import *
 from food import *
@@ -374,3 +375,50 @@ def detailsRestaurant():
         res = {}
 
     return res
+
+@app.route('/mail/subscribe', methods=['GET'])
+def subscribe():
+    try:
+        email = request.args.get('email')
+        sg = sendgrid.SendGridClient('shubham1810', 'shubhamgreplr2015')
+
+        msg = sendgrid.Mail()
+        msg.add_to(email)
+        msg.set_subject('Subscription of Greplr')
+        msg.set_html('''Hi!\n \
+                     Thank you for subscribing to Greplr. We will keep you updated about all the changes happening to Greplr.\n \
+                     Regards\n \
+                     Team Greplr''')
+        msg.set_text('Greplr')
+        msg.set_from('shubham@greplr.com')
+        status, mg = sg.send(msg)
+
+        a = Subscribe(email=email, subscribed_for='alpha')
+        a.save()
+
+
+        return json.dumps('[{\'status\':\'Sent\'}]')
+
+    except:
+        return json.dumps('[{\'status\':\'Failed\'}]')
+
+@app.route('/mail/contactus', methods=['GET'])
+def subscribe():
+    try:
+        email = request.args.get('email')
+        name = request.args.get('name')
+        message = request.args.get('message')
+        sg = sendgrid.SendGridClient('shubham1810', 'shubhamgreplr2015')
+
+        msg = sendgrid.Mail()
+        msg.add_to('hi@greplr.com')
+        msg.set_subject('User message')
+        msg.set_html(message)
+        msg.set_text('Greplr')
+        msg.set_from(email)
+        status, mg = sg.send(msg)
+
+        return json.dumps('[{\'status\':\'Sent\'}]')
+
+    except:
+        return json.dumps('[{\'status\':\'Failed\'}]')
