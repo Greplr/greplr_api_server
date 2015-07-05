@@ -403,7 +403,7 @@ def subscribe():
         return json.dumps('[{\'status\':\'Failed\'}]')
 
 @app.route('/mail/contactus', methods=['GET'])
-def subscribe():
+def contactus():
     try:
         email = request.args.get('email')
         name = request.args.get('name')
