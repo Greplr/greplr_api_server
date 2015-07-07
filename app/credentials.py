@@ -10,7 +10,7 @@ uber_credentials = {
 }
 
 parse_credentials = {
-         "application_id": "MPr0ZZhOIOMhyTIwm9PJ1L73s1E09wwRuIsIzyk7",
-         "rest_api_key": "PANsWgfWhtQ4Ot2Xyehz5z1FM9CahdS7d9LFBrrY",
-         "master_key": "nFqgTG6oIdCLJXDdbcurLcHYBFvjXCoUJ1Z1jdx2"
+         "application_id": "tA24P8ZHIuY6T6GCePmlwS94r7DKYIl0DrYee41g",
+         "rest_api_key": "fWsJZyXao6kpCSx5n74YRVq0th0IohgrlOUTuT6A",
+         "master_key": "PZ67KIANMEMZFUKQhGtcAxzBrOWgEeEJ5bWBvARB"
 }
