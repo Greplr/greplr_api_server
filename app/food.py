@@ -17,8 +17,11 @@ def foodpanda(lat=0, lng=0, id=0):
     else:
         url_new = 'http://api.foodpanda.in/api/v4/vendors?area_id=' + str(id)
         r = requests.get(url_new, headers=headers)
-        data = r.json()['data']['items']
-        return json.dumps(data)
+        data = r.json()['data']
+        restData = {}
+        restData['restaurants'] = data['items']
+        restData['area_id'] = str(id)
+        return json.dumps(restData)
 
     return
 
