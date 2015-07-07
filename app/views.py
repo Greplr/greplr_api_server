@@ -390,11 +390,14 @@ def subscribe():
                      Regards\n \
                      Team Greplr''')
         msg.set_text('Greplr')
-        msg.set_from('shubham@greplr.com')
+        msg.set_from('hi@greplr.com')
         status, mg = sg.send(msg)
 
-        a = Subscribe(email=email, subscribed_for='alpha')
-        a.save()
+        try:
+            mail = Subscribe.Query.get(email=email)
+        except:
+            a = Subscribe(email=email, subscribed_for='alpha')
+            a.save()
 
 
         return json.dumps('[{\'status\':\'Sent\'}]')
