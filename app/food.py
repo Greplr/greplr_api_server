@@ -6,14 +6,18 @@ def foodpanda(lat=0, lng=0, id=0):
         'X-FP-API-KEY': 'android'
     }
     if id == 0:
+        print id, "========================="
         url = 'http://api.foodpanda.in/api/v4/areas/geocoding_reverse?latitude='+str(lat)+'&longitude='+str(lng)+'&limit=1'
         r = requests.get(url, headers=headers)
-        data = r.json()['data']['items'][0]['main_area']['id']
+        data_id = r.json()['data']['items'][0]['main_area']['id']
         #print data
-        url_new = 'http://api.foodpanda.in/api/v4/vendors?area_id=' + str(data)
+        url_new = 'http://api.foodpanda.in/api/v4/vendors?area_id=' + str(data_id)
         r = requests.get(url_new, headers=headers)
-        data = r.json()['data']['items']
-        return json.dumps(data)
+        data = r.json()['data']
+        restData = {}
+        restData['restaurants'] = data['items']
+        restData['area_id'] = str(data_id)
+        return json.dumps(restData)
     else:
         url_new = 'http://api.foodpanda.in/api/v4/vendors?area_id=' + str(id)
         r = requests.get(url_new, headers=headers)
