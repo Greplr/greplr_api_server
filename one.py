@@ -35,7 +35,7 @@ def get_products():
 
     response = requests.get(url, params=parameters, headers=headers)
 
-    print response.status_code
+    #print response.status_code
     data = response.json
 
-print get_products()
+#print get_products()

@@ -14,7 +14,7 @@ def uber_api(latitude, longitude):
 
     response_from_uber = requests.get(url, params=parameters)
     dataTime = response_from_uber.json()
-    print dataTime
+    #print dataTime
 
     parameters = {
         'server_token': uber_credentials['server_token'],
@@ -97,7 +97,7 @@ def goibibo_api(src, dest, day):
 
     res = data.json()
 
-    print len(res['data']['onwardflights'])
+    #print len(res['data']['onwardflights'])
 
     for x in res['data']['onwardflights']:
         filler_dict['origin'] = x['origin']

@@ -166,7 +166,7 @@ def food_restaurant():
         &type=department_store|food|grocery_or_supermarket''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
-    print results_json
+    #print results_json
     arr =[]
     for i in results_json['results']:
         d = get_dict(id=i['place_id'],\
