@@ -1,1 +1,5 @@
 geopy
+sendgrid
+BeautifulSoup4
+ParsePy
+flask-httpauth

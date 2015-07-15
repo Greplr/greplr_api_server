@@ -7,4 +7,3 @@ import os
 app.config['SECRET_KEY'] = 'thisisarandomstring007becauseilovejamesbond'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['UPLOAD_FOLDER'] = os.getcwd()
-	

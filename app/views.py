@@ -1,31 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from app import app
 import copy
-import flask, flask.views
-from flask import render_template,request,make_response,redirect,Response, url_for
-import json,urllib2,xml,datetime,hashlib,time,requests,base64
-from flask import jsonify
-from base64 import b64encode
-import requests
+import json
+import urllib2
+import xml
+import datetime
 import hashlib
-from models import Feedback, Subscribe, Contact
-from credentials import client_id,client_secret, uber_credentials, parse_credentials
+import time
+import base64
+from base64 import b64encode
+import hashlib
 
-from credentials import google_places_api_key
-from utils import get_dict,distance
+import flask
+import flask.views
+from flask import render_template, request, make_response, redirect, Response, url_for
+import requests
+from flask import jsonify
+import requests
 from geopy.distance import vincenty
-
 from flask.ext.httpauth import HTTPBasicAuth
 import sendgrid
+from bs4 import BeautifulSoup as BS
 
+from app import app
+from models import Feedback, Subscribe, Contact
+from credentials import client_id, client_secret, uber_credentials, parse_credentials
+from credentials import google_places_api_key
+from utils import get_dict, distance
 from travel import *
 from food import *
 from shop import *
 from food_mmx import *
-
-from bs4 import BeautifulSoup as BS
 
 auth = HTTPBasicAuth()
 
@@ -38,9 +44,10 @@ users = {
 
 @app.after_request
 def cache(response):
-    #response.cache_control.max_age = 60
+    # response.cache_control.max_age = 60
     response.headers['Cache-Control'] = 'public, max-age=60, only-if-cached, max-stale=0'
     return response
+
 
 #################################################################################################
 
@@ -61,23 +68,26 @@ def reverse_geocode():
     lat = request.args.get('latitude')
     lon = request.args.get('longitude')
 
-    url = 'https://api.mapmyindia.com/v3?fun=rev_geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&lng='+str(lon)+'&lat='+str(lat)
+    url = 'https://api.mapmyindia.com/v3?fun=rev_geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&lng=' + str(
+        lon) + '&lat=' + str(lat)
 
     data = requests.get(url)
 
     listData = data.json()
     return data.text
+
 
 @app.route('/geo', methods=['GET'])
 def geocoding():
     query = request.args.get('location')
 
-    url = 'https://api.mapmyindia.com/v3?fun=geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&q='+str(query)
+    url = 'https://api.mapmyindia.com/v3?fun=geocode&lic_key=wnnpaidz5ghljto6wupj1k3p3xmcry21&q=' + str(query)
 
     data = requests.get(url)
 
     listData = data.json()
     return data.text
+
 
 @app.route('/api/travel/cabs', methods=['GET', 'GET'])
 def travel_api():
@@ -116,28 +126,27 @@ def travel_api():
 
 @app.route('/api/travel/bus', methods=['GET'])
 def travel_bus():
-
     src = request.args.get('src')
     dest = request.args.get('dest')
     date_leave = request.args.get('date')
 
     x = date_leave.split('-')
-    date = x[2]+x[1]+x[0]
+    date = x[2] + x[1] + x[0]
 
     result = goibibo_api(src, dest, date)
 
     return json.dumps(result)
 
+
 @app.route('/api/travel/flight', methods=['GET'])
 def travel_flight():
-
     src = request.args.get('src')
     dest = request.args.get('dest')
     date = request.args.get('date')
     num = request.args.get('adults')
 
     x = date.split('-')
-    date = x[2]+x[1]+x[0]
+    date = x[2] + x[1] + x[0]
 
     result = goibibo_flight(src, dest, date, num)
 
@@ -163,20 +172,21 @@ def food_restaurant():
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=2000\
-        &type=food|restaurant''' %(google_places_api_key,lat,long)
+        &type=food|restaurant''' % (google_places_api_key, lat, long)
 
     results_json = requests.get(url).json()
-    #print results_json
-    arr =[]
+    # print results_json
+    arr = []
     for i in results_json['results']:
-        d = get_dict(id=i['place_id'],\
-            name=i['name'],\
-            address=i['vicinity'],\
-            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
-            type=i['types'],
-            lat = i['geometry']['location']['lat'],
-            lng = i['geometry']['location']['lng']
-            )
+        d = get_dict(id=i['place_id'], \
+                     name=i['name'], \
+                     address=i['vicinity'], \
+                     distance=int(vincenty((lat, long), (
+                     float(i['geometry']['location']['lat']), float(i['geometry']['location']['lng']))).meters), \
+                     type=i['types'],
+                     lat=i['geometry']['location']['lat'],
+                     lng=i['geometry']['location']['lng']
+                     )
         try:
             d['rating'] = i['rating']
         except:
@@ -199,19 +209,20 @@ def food_bar():
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=2000\
-        &type=bar''' %(google_places_api_key,lat,long)
+        &type=bar''' % (google_places_api_key, lat, long)
 
     results_json = requests.get(url).json()
-    arr =[]
+    arr = []
     for i in results_json['results']:
-        d = get_dict(id=i['place_id'],\
-            name=i['name'],\
-            address=i['vicinity'],\
-            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
-            type=i['types'],
-            lat = i['geometry']['location']['lat'],
-            lng = i['geometry']['location']['lng']
-            )
+        d = get_dict(id=i['place_id'], \
+                     name=i['name'], \
+                     address=i['vicinity'], \
+                     distance=int(vincenty((lat, long), (
+                     float(i['geometry']['location']['lat']), float(i['geometry']['location']['lng']))).meters), \
+                     type=i['types'],
+                     lat=i['geometry']['location']['lat'],
+                     lng=i['geometry']['location']['lng']
+                     )
         try:
             d['rating'] = i['rating']
         except:
@@ -241,7 +252,6 @@ def feedback():
 
 
 def sentiment(data):
-
     url = 'https://api.idolondemand.com/1/api/sync/analyzesentiment/v1'
 
     params = {
@@ -251,7 +261,7 @@ def sentiment(data):
 
     res = requests.post(url, data=params)
 
-    return float(res.json()['aggregate']['score'])*5.0
+    return float(res.json()['aggregate']['score']) * 5.0
 
 
 @app.route('/api/food/cafe', methods=['GET'])
@@ -262,19 +272,20 @@ def food_cafe():
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=2000\
-        &type=cafe''' %(google_places_api_key,lat,long)
+        &type=cafe''' % (google_places_api_key, lat, long)
 
     results_json = requests.get(url).json()
-    arr =[]
+    arr = []
     for i in results_json['results']:
-        d = get_dict(id=i['place_id'],\
-            name=i['name'],\
-            address=i['vicinity'],\
-            distance=int(vincenty((lat,long),(float(i['geometry']['location']['lat']),float(i['geometry']['location']['lng']))).meters),\
-            type=i['types'],
-            lat = i['geometry']['location']['lat'],
-            lng = i['geometry']['location']['lng']
-            )
+        d = get_dict(id=i['place_id'], \
+                     name=i['name'], \
+                     address=i['vicinity'], \
+                     distance=int(vincenty((lat, long), (
+                     float(i['geometry']['location']['lat']), float(i['geometry']['location']['lng']))).meters), \
+                     type=i['types'],
+                     lat=i['geometry']['location']['lat'],
+                     lng=i['geometry']['location']['lng']
+                     )
         try:
             d['rating'] = i['rating']
         except:
@@ -308,6 +319,7 @@ def movies():
 
     return json.dumps(result)
 
+
 @app.route('/api/events/plays', methods=['GET'])
 def plays():
     url = 'http://data-in.bookmyshow.com/'
@@ -327,6 +339,7 @@ def plays():
     result = res['BookMyShow']['arrEvent']
 
     return json.dumps(result)
+
 
 @app.route('/api/events/cultural', methods=['GET'])
 def cultural():
@@ -351,7 +364,6 @@ def cultural():
 
 @app.route('/api/shop/offers', methods=['GET'])
 def offers():
-
     res = []
 
     try:
@@ -364,7 +376,6 @@ def offers():
 
 @app.route('/api/shop/search', methods=['GET'])
 def search_items():
-
     try:
         query = request.args.get('q')
     except:
@@ -382,7 +393,6 @@ def search_items():
 
 @app.route('/api/foodmmx/nearme', methods=['GET'])
 def for_mmx():
-
     try:
         lat = str(request.args.get('lat'))
         lng = str(request.args.get('lng'))
@@ -392,15 +402,16 @@ def for_mmx():
 
     return food_mmx(lat, lng)
 
+
 @app.route('/api/foodmmx/details', methods=['GET'])
 def detailsRestaurant():
-
     try:
         res = restaurant_details(str(request.args.get('id')))
     except:
         res = {}
 
     return res
+
 
 @app.route('/mail/subscribe', methods=['GET'])
 def subscribe():
@@ -425,11 +436,11 @@ def subscribe():
             a = Subscribe(email=email, subscribed_for='alpha')
             a.save()
 
-
         return json.dumps('[{\'status\':\'Sent\'}]')
 
     except:
         return json.dumps('[{\'status\':\'Failed\'}]')
+
 
 @app.route('/mail/contactus', methods=['GET'])
 def contactus():
