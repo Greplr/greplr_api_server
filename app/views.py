@@ -162,8 +162,8 @@ def food_restaurant():
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
-        &radius=1000\
-        &type=department_store|food|grocery_or_supermarket''' %(google_places_api_key,lat,long)
+        &radius=2000\
+        &type=food|restaurant''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
     #print results_json
@@ -189,7 +189,7 @@ def food_bar():
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
-        &radius=1000\
+        &radius=2000\
         &type=bar''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
@@ -243,7 +243,7 @@ def food_cafe():
 
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
-        &radius=1000\
+        &radius=2000\
         &type=cafe''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
