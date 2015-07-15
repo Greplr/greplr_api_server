@@ -177,6 +177,15 @@ def food_restaurant():
             lat = i['geometry']['location']['lat'],
             lng = i['geometry']['location']['lng']
             )
+        try:
+            d['rating'] = i['rating']
+        except:
+            d['rating'] = '0.0'
+
+        try:
+            d['open_now'] = i['opening_hours']['open_now']
+        except:
+            d['open_now'] = 'no response'
         arr.append(copy.deepcopy(d))
 
     return json.dumps(arr)
@@ -203,6 +212,15 @@ def food_bar():
             lat = i['geometry']['location']['lat'],
             lng = i['geometry']['location']['lng']
             )
+        try:
+            d['rating'] = i['rating']
+        except:
+            d['rating'] = '0.0'
+
+        try:
+            d['open_now'] = i['opening_hours']['open_now']
+        except:
+            d['open_now'] = 'no response'
         arr.append(copy.deepcopy(d))
 
     return json.dumps(arr)
@@ -257,6 +275,14 @@ def food_cafe():
             lat = i['geometry']['location']['lat'],
             lng = i['geometry']['location']['lng']
             )
+        try:
+            d['rating'] = i['rating']
+        except:
+            d['rating'] = '0.0'
+        try:
+            d['open_now'] = i['opening_hours']['open_now']
+        except:
+            d['open_now'] = 'no response'
         arr.append(copy.deepcopy(d))
 
     return json.dumps(arr)
