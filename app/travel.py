@@ -1,9 +1,11 @@
-from credentials import uber_credentials
-import requests
 import copy
 
-def uber_api(latitude, longitude):
+import requests
 
+from credentials import uber_credentials
+
+
+def uber_api(latitude, longitude):
     url = 'https://api.uber.com/v1/estimates/time'
 
     parameters = {
@@ -14,7 +16,7 @@ def uber_api(latitude, longitude):
 
     response_from_uber = requests.get(url, params=parameters)
     dataTime = response_from_uber.json()
-    #print dataTime
+    # print dataTime
 
     parameters = {
         'server_token': uber_credentials['server_token'],
@@ -36,7 +38,7 @@ def uber_api(latitude, longitude):
     for x_data in dataTime['times']:
 
         filler_dictionary['provider'] = cab_provider
-        filler_dictionary['time_of_arrival'] = int(int(x_data['estimate'])/60)
+        filler_dictionary['time_of_arrival'] = int(int(x_data['estimate']) / 60)
         filler_dictionary['display_name'] = x_data['display_name']
 
         for y_data in data['products']:
@@ -54,9 +56,8 @@ def uber_api(latitude, longitude):
 
 
 def taxi_for_sure_api(latitude, longitude):
-
-    url = 'http://iospush.taxiforsure.com/getNearestDriversForApp/?density=320&appVersion=4.1.1&longitude='\
-          + str(longitude) +'&latitude=' + str(latitude)
+    url = 'http://iospush.taxiforsure.com/getNearestDriversForApp/?density=320&appVersion=4.1.1&longitude=' \
+          + str(longitude) + '&latitude=' + str(latitude)
 
     final_list = []
     filler_dict = {}
@@ -81,7 +82,6 @@ def taxi_for_sure_api(latitude, longitude):
 
 
 def goibibo_api(src, dest, day):
-
     url = 'http://developer.goibibo.com/api/bus/search/?app_id=3d427fd7&app_key=f6b88b898c2059604e9b26e5cf2fee7d&format=json'
 
     params = {
@@ -97,7 +97,7 @@ def goibibo_api(src, dest, day):
 
     res = data.json()
 
-    #print len(res['data']['onwardflights'])
+    # print len(res['data']['onwardflights'])
 
     for x in res['data']['onwardflights']:
         filler_dict['origin'] = x['origin']
@@ -115,10 +115,24 @@ def goibibo_api(src, dest, day):
 
     return result_list
 
-data_code = {"hyderabad": "HYD", "madurai": "IXM", "hubli": "HBX", "coimbatore": "CJB", "rae bareli": "BEK", "agartala": "IXA", "jamshedpur": "IXW", "daman": "NMB", "calcutta (kolkata)": "CCU", "varanasi": "VNS", "ludhiana": "LUH", "agra": "AGR", "vishakhapatnam": "VTZ", "new delhi": "DEL", "pondicherry": "PNY", "ranchi": "IXR", "bhavnagar": "BHU", "jamnagar": "JGA", "bagdogra": "IXB", "goa": "GOI", "vadodara": "BDQ", "amritsar": "ATQ", "kanpur": "KNU", "patna": "PAT", "silchar": "IXS", "shillong": "SHL", "udaipur": "UDR", "gauhati": "GAU", "dimapur": "DMU", "bhopal": "BHO", "tezpur": "TEZ", "chandigarh": "IXC", "vijayawada": "VGA", "khajuraho": "HJR", "dibrugarh": "DIB", "tirupati": "TIR", "jammu": "IXJ", "leh": "IXL", "poona (pune)": "PNQ", "jodhpur": "JDH", "dehradun": "DED", "port blair": "IXZ", "jorhat": "JRH", "nasik": "ISK", "trivandrum": "TRV", "allahabad": "IXD", "porbandar": "PBD", "tiruchirapally": "TRZ", "aurangabad": "IXU", "bangalore": "BLR", "srinagar": "SXR", "ahmedabad": "AMD", "bhubaneswar": "BBI", "cochin": "COK", "indore": "IDR", "lucknow": "LKO", "mumbai (bombay)": "BOM", "surat": "STV", "chennai(madras)": "MAA", "jaipur": "JAI", "nagpur": "NAG", "gwalior": "GWL", "kozhikode (calicut)": "CCJ", "bhuj": "BHJ", "nanded": "NDC", "diu": "DIU", "rajkot": "RAJ", "imphal": "IMF", "mangalore": "IXE", "puttaparthi": "PUT"}
+
+data_code = {"hyderabad": "HYD", "madurai": "IXM", "hubli": "HBX", "coimbatore": "CJB", "rae bareli": "BEK",
+             "agartala": "IXA", "jamshedpur": "IXW", "daman": "NMB", "calcutta (kolkata)": "CCU", "varanasi": "VNS",
+             "ludhiana": "LUH", "agra": "AGR", "vishakhapatnam": "VTZ", "new delhi": "DEL", "pondicherry": "PNY",
+             "ranchi": "IXR", "bhavnagar": "BHU", "jamnagar": "JGA", "bagdogra": "IXB", "goa": "GOI", "vadodara": "BDQ",
+             "amritsar": "ATQ", "kanpur": "KNU", "patna": "PAT", "silchar": "IXS", "shillong": "SHL", "udaipur": "UDR",
+             "gauhati": "GAU", "dimapur": "DMU", "bhopal": "BHO", "tezpur": "TEZ", "chandigarh": "IXC",
+             "vijayawada": "VGA", "khajuraho": "HJR", "dibrugarh": "DIB", "tirupati": "TIR", "jammu": "IXJ",
+             "leh": "IXL", "poona (pune)": "PNQ", "jodhpur": "JDH", "dehradun": "DED", "port blair": "IXZ",
+             "jorhat": "JRH", "nasik": "ISK", "trivandrum": "TRV", "allahabad": "IXD", "porbandar": "PBD",
+             "tiruchirapally": "TRZ", "aurangabad": "IXU", "bangalore": "BLR", "srinagar": "SXR", "ahmedabad": "AMD",
+             "bhubaneswar": "BBI", "cochin": "COK", "indore": "IDR", "lucknow": "LKO", "mumbai (bombay)": "BOM",
+             "surat": "STV", "chennai(madras)": "MAA", "jaipur": "JAI", "nagpur": "NAG", "gwalior": "GWL",
+             "kozhikode (calicut)": "CCJ", "bhuj": "BHJ", "nanded": "NDC", "diu": "DIU", "rajkot": "RAJ",
+             "imphal": "IMF", "mangalore": "IXE", "puttaparthi": "PUT"}
+
 
 def goibibo_flight(src, dest, date, num):
-
     url = 'http://developer.goibibo.com/api/search/?app_id=3d427fd7&app_key=f6b88b898c2059604e9b26e5cf2fee7d'
 
     '''try:
@@ -161,7 +175,6 @@ def goibibo_flight(src, dest, date, num):
 
     return result_list
 
+
 if __name__ == '__main__':
     print taxi_for_sure_api(28.739137, 77.124717)
-
-
