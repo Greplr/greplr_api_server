@@ -244,7 +244,7 @@ def food_cafe():
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=1000\
-        &type=bakery|cafe''' %(google_places_api_key,lat,long)
+        &type=cafe''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
     arr =[]
