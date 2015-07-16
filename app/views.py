@@ -32,6 +32,7 @@ from travel import *
 from food import *
 from shop import *
 from food_mmx import *
+from events import *
 
 auth = HTTPBasicAuth()
 
@@ -301,65 +302,41 @@ def food_cafe():
 
 @app.route('/api/events/movies', methods=['GET'])
 def movies():
-    url = 'http://data-in.bookmyshow.com/'
 
-    params = {
-        'cmd': 'GETEVENTLIST',
-        'f': 'json',
-        't': '67x1xa33b4x422b361ba',
-        'rc': 'NCR',
-        'et': 'MT',
-        'src': 'GURG',
-    }
+    arr = []
 
-    data = requests.get(url, params=params)
-    res = data.json()
+    try:
+        arr += events_movies()
+    except:
+        pass
 
-    result = res['BookMyShow']['arrEvent']
-
-    return json.dumps(result)
+    return json.dumps(arr)
 
 
 @app.route('/api/events/plays', methods=['GET'])
 def plays():
-    url = 'http://data-in.bookmyshow.com/'
 
-    params = {
-        'cmd': 'GETEVENTLIST',
-        'f': 'json',
-        't': '67x1xa33b4x422b361ba',
-        'rc': 'NCR',
-        'et': 'PL',
-        'src': 'GURG',
-    }
+    arr = []
 
-    data = requests.get(url, params=params)
-    res = data.json()
+    try:
+        arr += events_plays()
+    except:
+        pass
 
-    result = res['BookMyShow']['arrEvent']
-
-    return json.dumps(result)
+    return json.dumps(arr)
 
 
-@app.route('/api/events/cultural', methods=['GET'])
-def cultural():
-    url = 'http://data-in.bookmyshow.com/'
+@app.route('/api/events/concerts', methods=['GET'])
+def concerts():
 
-    params = {
-        'cmd': 'GETEVENTLIST',
-        'f': 'json',
-        't': '67x1xa33b4x422b361ba',
-        'rc': 'NCR',
-        'et': 'CT',
-        'src': 'GURG',
-    }
+    arr = []
 
-    data = requests.get(url, params=params)
-    res = data.json()
+    try:
+        arr += events_concerts()
+    except:
+        pass
 
-    result = res['BookMyShow']['arrEvent']
-
-    return json.dumps(result)
+    return json.dumps(arr)
 
 
 @app.route('/api/shop/offers', methods=['GET'])
