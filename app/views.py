@@ -163,7 +163,7 @@ def food_restaurant():
     url = '''https://maps.googleapis.com/maps/api/place/nearbysearch/json?parameters&key=%s\
         &location=%s,%s\
         &radius=2000\
-        &type=food|restaurant''' %(google_places_api_key,lat,long)
+        &type=food and restaurant''' %(google_places_api_key,lat,long)
 
     results_json = requests.get(url).json()
     #print results_json
