@@ -8,7 +8,7 @@ def flipkart_offers():
     url = 'https://affiliate-api.flipkart.net/affiliate/offers/v1/dotd/json'
     headers = {
         'Fk-Affiliate-Id': 'shubhamgr1',
-        'Fk-Affiliate-Token': 'd6935b0e76604db383d6421eda50a0ea'
+        'Fk-Affiliate-Token': '0364458d8d3a4c51a3d13b2192eaea58'
     }
 
     r = requests.get(url, headers=headers)
@@ -33,7 +33,7 @@ def flipkart_search(query):
     url = 'https://affiliate-api.flipkart.net/affiliate/search/json?query=' + str(query) + '&resultCount=30'
     headers = {
         'Fk-Affiliate-Id': 'shubhamgr1',
-        'Fk-Affiliate-Token': 'd6935b0e76604db383d6421eda50a0ea'
+        'Fk-Affiliate-Token': '0364458d8d3a4c51a3d13b2192eaea58'
     }
 
     r = requests.get(url, headers=headers)
